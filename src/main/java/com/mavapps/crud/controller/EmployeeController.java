@@ -7,8 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mavapps.crud.entities.Employee;
 import com.mavapps.crud.repositories.EmployeeRepository;
 
-import java.util.List;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Valid;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,8 +38,25 @@ public class EmployeeController {
     }
     
     @PostMapping
-    public Employee create(@RequestBody Employee employee){
+    public ResponseEntity<String> create(@Valid @RequestBody Employee employee){
+
+        /* 
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+ 
+        Set<ConstraintViolation<Employee>> violations = validator.validate(employee);
+
+        for (ConstraintViolation<Employee> violation : violations) {
+            System.out.println(violation.getMessage()); 
+        }
+            
+
         return repo.save(employee);
+        */
+
+        repo.save(employee);
+
+        return ResponseEntity.ok("Employee saveed");
     }
 
     @PostMapping(path = "/delete")
@@ -58,7 +84,7 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/searchWithCriteria")
-    public List<Employee> searchWithCriteria(
+    public ResponseEntity<List<Employee>> searchWithCriteria(
         @RequestParam String lastName,
         @RequestParam String firstName,
         @RequestParam String middleName,
@@ -68,7 +94,7 @@ public class EmployeeController {
         @RequestParam String sortBy,
         @RequestParam Boolean isAsc
     ) {
-        return repo.searchWithCriteria(
+        return new ResponseEntity<>(repo.searchWithCriteria(
             firstName,
             middleName, 
             lastName, 
@@ -77,7 +103,7 @@ public class EmployeeController {
             pageNumber,
             sortBy,
             isAsc
-        );
+        ), HttpStatus.OK);
     }
     
 

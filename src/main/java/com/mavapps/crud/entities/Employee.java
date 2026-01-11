@@ -10,6 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name="employee")
@@ -25,12 +29,17 @@ public class Employee {
     @Column(name = "middle_name")
     public String middleName;
 
+    @NotNull
     @Column(name = "last_name")
     public String lastName;
 
+
+    @NotBlank(message = "Email cannot be blank")
+    @Email
     @Column
     public String email;
 
+    @PositiveOrZero
     @Column(name = "monthly_salary")
     public Double monthlySalary;
 
