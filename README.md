@@ -22,6 +22,7 @@ Searching by name or department
 Pagination and Sorting
 * I used Criteria API for pagination and sorting.
 * I created a custom Employee Repository to this and attach to the base repository.
+* For pagination, I used specifically Typed Query cause it has firstResult and maxResult capability.
 
 Validation
 * I used bean validation for this.
